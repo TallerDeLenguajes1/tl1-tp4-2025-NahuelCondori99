@@ -112,9 +112,8 @@ void mostrarTareas(Nodo *tarea)
 {
     while (tarea)
     {
-        printf("Tarea ID: %d\n", tarea->T.TareaID);
-        printf("Descripcion: %s\n", tarea->T.Descripcion);
-        printf("Duracion de la tarea: %d\n", tarea->T.Duracion);
+        printf("Tarea ID: %d --> Descripcion: %s --> Duracion de la tarea: %d minutos\n", tarea->T.TareaID, tarea->T.Descripcion, tarea->T.Duracion);
+
         tarea = tarea->Siguiente;
     }
 }
