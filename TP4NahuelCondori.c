@@ -35,8 +35,6 @@ int main()
     tareaRealizada = crearListaVacia();
 
     char opcion;
-    printf("¿Desea ingresar una tarea?(s/n).");
-    scanf("%c", &opcion);
     fflush(stdin);
 
     int contador = 1;
