@@ -178,7 +178,7 @@ void eliminarNodo(Nodo **lista, int id) {
         actual = actual->Siguiente;
     }
 
-    if (actual == NULL) return; // No encontrado
+    if (actual == NULL) return;
 
     if (anterior == NULL) {
         *lista = actual->Siguiente;
