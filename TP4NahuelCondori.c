@@ -25,6 +25,9 @@ Nodo *crearListaVacia();
 Nodo *crearNuevoNodo(int id, int duracion, char *descripcion);
 void agregarTarea(Nodo **lista, Nodo *nuevoNodo);
 void mostrarTareas(Nodo *tarea);
+Nodo *buscarNodo(Nodo *Lista, int id);
+void eliminarNodo(Nodo **lista, int id);
+void tareaPorIDoClave(Nodo **lista, int id, int clave);
 
 int main()
 {
@@ -37,7 +40,7 @@ int main()
     char opcion;
     fflush(stdin);
 
-    int contador = 1;
+    int contador = 0;
 
     do
     {
@@ -63,8 +66,40 @@ int main()
         scanf(" %c", &opcion);
         getchar();
     } while (tolower(opcion) != 'n');
+    
+    printf("***Tareas pendientes***\n");
 
-    printf("Tareas pendientes\n");
+    mostrarTareas(tareaPendiente);
+
+    char valido;
+
+    do
+    {
+        int idTarea;
+        printf("Ingresar ID de la tarea que ya realizo:");
+        scanf("%d",&idTarea);
+
+        Nodo *nodoBuscado = buscarNodo(tareaPendiente, idTarea);
+
+        if (nodoBuscado != NULL)
+        {   
+
+            Nodo *nodoCopia = crearNuevoNodo(nodoBuscado->T.TareaID - 1000, nodoBuscado->T.Duracion, nodoBuscado->T.Descripcion);
+            
+            eliminarNodo(&tareaPendiente, idTarea); 
+            agregarTarea(&tareaRealizada, nodoCopia);
+            printf("Realizo alguna otra tarea?(s/n)");
+            scanf(" %c",&valido);
+            getchar();
+        }
+        
+
+    } while (tolower(valido) != 'n');   
+
+    printf("***Tareas realizadas***\n");
+    mostrarTareas(tareaRealizada);
+
+    printf("***Tareas pendientes***\n");
     mostrarTareas(tareaPendiente);
 
     return 0;
@@ -116,4 +151,41 @@ void mostrarTareas(Nodo *tarea)
 
         tarea = tarea->Siguiente;
     }
+}
+
+Nodo *buscarNodo(Nodo *Lista, int id)
+{
+
+    while (Lista != NULL)
+    {
+        if (Lista->T.TareaID == id)
+        {
+            return(Lista);
+        }
+        
+        Lista = Lista->Siguiente;
+
+    }
+    return(0);
+}
+
+void eliminarNodo(Nodo **lista, int id) {
+    Nodo *actual = *lista;
+    Nodo *anterior = NULL;
+
+    while (actual != NULL && actual->T.TareaID != id) {
+        anterior = actual;
+        actual = actual->Siguiente;
+    }
+
+    if (actual == NULL) return; // No encontrado
+
+    if (anterior == NULL) {
+        *lista = actual->Siguiente;
+    } else {
+        anterior->Siguiente = actual->Siguiente;
+    }
+
+    free(actual->T.Descripcion);
+    free(actual);
 }
